@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>ajax teri</h1>
+
+    <button type="button" class="btn btn-primary" id="fetchdata">Primary</button>
+    <button type="button" class="btn btn-primary" id="getdataa">Primary</button>
+
+    <div id="container">
+    </div>
+</body>
+<script>
+    let btn = document.getElementById('fetchdata');
+    let btn2 = document.getElementById('getdataa');
+
+    let container = document.getElementById('container');
+
+    // ----------------------- fetch api --------------------------------------
+
+    // function getData() {
+    //     console.log('get data');
+    //     url = "harry.txt";
+    //     fetch(url).then((response) => {
+    //         console.log('inside first');
+    //         return response.text();
+    //     }).then((data) => {
+    //         console.log('inside first');
+    //         console.log(data)
+    //     })
+    // }
+    btn.addEventListener('click', function getData() {
+        console.log('get data');
+        url = "https://api.github.com/users";
+        fetch(url).then((response) => {
+            console.log('inside first');
+            return response.json();
+        }).then((data) => {
+            console.log('inside first');
+            console.log(data)
+        })
+    })
+
+    btn2.addEventListener('click', function postData() {
+        console.log('get data');
+        url = "https://dummy.restapiexample.com/api/v1/create";
+        data = '{"name":"c7hhhhhhhhhq","salary":"123","age":"23"}'
+        param = {
+            method: 'post', headers: {
+                'content-type': 'application/json'
+            },
+            body: data
+        }
+        fetch(url, param).then((response) => {
+            console.log('inside first');
+            return response.json();
+        }).then((data) => {
+            console.log('inside first');
+            console.log(data)
+        })
+    })
+
+
+
+    console.log('before');
+    // getData();
+    console.log('after');
+
+</script>
+
+</html>

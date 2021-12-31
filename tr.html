@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <link rel="stylesheet" href="home.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Saira Stencil One', cursive;
+            background: #000;
+        }
+
+        #hero {
+            background: #000;
+        }
+
+        .text {
+            text-align: center;
+        }
+
+        .content {
+            margin: 200px auto;
+            text-align: center;
+            overflow: hidden;
+
+            justify-content: center;
+            text-align: center;
+
+        }
+
+        .content h1 {
+            opacity: 4;
+            color: #000;
+            font-weight: 900;
+            font-size: 15vmin;
+            text-align: center;
+            font-size: 15vmin;
+            /* If you want to be extra-fancy */
+            line-height: 110%;
+            text-shadow: 0.05em 0.05em 0.1em #fff;
+            text-shadow: 0 0.025em 0.05em rgba(245, 245, 245, 0.75), 0 0.05em 0.1em rgba(231, 231, 231, 0.5);
+
+            text-shadow:
+                2px 2px 0 #fff,
+                -1px -1px 0 #fff,
+                1px -1px 0 #fff,
+                -1px 1px 0 #fff,
+                1px 1px 0 #fff;
+
+
+        }
+
+        .content h1 span {
+            color: grey
+        }
+
+        .content p1 {
+            color: rgb(14, 201, 76);
+            font-size: 2vw;
+            font-style: bold;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            #cursor {
+
+                position: fixed;
+                left: 0;
+                top: 0;
+                pointer-events: none;
+                will-change: transform;
+            }
+
+            #cursor .cursor--inner {
+                width: 0.5vw;
+                height: 0.5vw;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                border: solid 1px #1d213f;
+                background: #fff;
+
+            }
+
+            #cursor .cursor--inner video {
+                width: 0vw;
+                height: 0vw;
+                border-radius: 50%;
+            }
+        }
+
+        .content:hover+#cursor .cursor--inner {
+            transition: all 0.5s ease-in-out;
+            transition: all 1s ease-out;
+            width: 30vw;
+            height: 30vw;
+            opacity: 0.5;
+        }
+
+        .content:hover+#cursor .cursor--inner video {
+            transition: all 0.5s ease-in-out;
+            width: 30vw;
+            height: 30vw;
+            object-fit: cover;
+        }
+
+        .content p1:hover {
+
+            z-index: 999;
+        }
+
+        .img-wrap {
+            /* Likely that you do not need any of this positioning depending on the rest of your layout */
+            position: absolute;
+            bottom: 10vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+            display: grid;
+            grid-template-columns: repeat(5, min(50vw, 75px));
+            gap: 100px;
+            justify-items: center;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .img-wrap>button {
+            box-sizing: border-box;
+            background: transparent;
+            border-radius: 0.6em;
+
+            width: 100%;
+            height: auto;
+            transition: all 0.2s ease-in-out;
+            border-color: #3498db;
+
+            transition: all 150ms ease-in-out;
+        }
+
+        .img-wrap>button:hover {
+            box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+        }
+
+        .img-wrap button:hover {
+            transform: scale(2.5);
+        }
+
+        .img-wrap .small-scale {
+            transform: scale(1.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .btnContainer {
+            width: 100px;
+            height: 40px;
+            left: 50px;
+            top: 50px;
+            bottom: 0;
+            right: 0;
+            position: relative;
+        }
+
+        .btn {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background: #3c3459;
+            border-radius: 999px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .knob {
+            width: 20px;
+            height: 20px;
+            position: relative;
+        }
+
+        .top {
+            background-color: #827d96;
+            border-radius: 999px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .light {
+            border-radius: 999px;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(50% 50% at 50% 50%,
+                    #4cc3e2 10.42%,
+                    rgba(94, 199, 227, 0.791579) 27.08%,
+                    rgba(113, 204, 229, 0.35) 45.31%,
+                    rgba(144, 213, 231, 0.11) 65.1%,
+                    rgba(158, 216, 231, 0.02) 78.12%,
+                    rgba(177, 221, 233, 0) 95.83%);
+            left: 20%;
+            top: 20%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        .no-highlight {
+            /* bad for accessibility - please don't use this in real world applications */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .popup-container {
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+            transform: scale(1.3);
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(21, 17, 17, 0.61);
+            display: flex;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: rgb(121, 112, 112);
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        .popup-content p {
+            font-size: 17px;
+            padding: 10px;
+            line-height: 20px;
+        }
+
+
+        .popup-content span:hover,
+        .popup-content span:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .show {
+            visibility: visible;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .more-articles {
+            margin: 30px 30px 50px;
+            font-size: 20px;
+        }
+
+        .more-articles a {
+            margin: 0 10px;
+            text-decoration: underline;
+        }
+
+        .glitch {
+            font-size: 5rem;
+            font-weight: 600;
+
+            text-shadow:
+                0.05em 0 0 rgba(255, 0, 0, 0.75),
+                -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+                0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            animation: glitch 500ms infinite;
+            position: relative;
+        }
+
+        .glitch span {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .glitch span:first-child {
+            animation: glitch 650ms infinite;
+            z-index: 1;
+            clip-path: polygon(0 50%, 100% 20%, 100% 100%, 0 100%);
+            transform: translate(0px, 3px) rotate(-1deg);
+            opacity: 0.8;
+        }
+
+        .glitch span:last-child {
+            animation: glitch 450ms infinite;
+            z-index: 10;
+            clip-path: polygon(70% 10%, 100% 90%, 0% 10%, 100% 0%);
+            transform: translate(-3px, 0px) rotate(1deg);
+        }
+
+        /*Animation effect for glitch*/
+        @keyframes glitch {
+            0% {
+                text-shadow:
+                    0.05em 0 0 rgba(255, 0, 0, 0.75),
+                    -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+                    -0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            14% {
+                text-shadow:
+                    0.05em 0 0 rgba(255, 0, 0, 0.75),
+                    -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+                    -0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            15% {
+                text-shadow:
+                    -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+                    0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+                    -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            49% {
+                text-shadow:
+                    -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+                    0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+                    -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            50% {
+                text-shadow:
+                    0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+                    0.05em 0 0 rgba(0, 255, 0, 0.75),
+                    0 -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            99% {
+                text-shadow:
+                    0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+                    0.05em 0 0 rgba(0, 255, 0, 0.75),
+                    0 -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+
+            100% {
+                text-shadow:
+                    -0.025em 0 0 rgba(255, 0, 0, 0.75),
+                    -0.025em -0.025em 0 rgba(0, 255, 0, 0.75),
+                    -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
+            }
+        }
+
+        h3 {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .midea {
+                background-color: #fff;
+            }
+
+            #hero {
+                visibility: hidden;
+            }
+
+            h3 {
+                display: block;
+                color: rgb(29, 6, 128);
+                font-size: 10vw;
+
+                line-height: 200px;
+            }
+        }
+    </style>
+    <div class="midea">
+        <h3>BEST EXPERIENCE FROM A DESKTOP/PC BROWSER</h3>
+        <div id="hero">
+            <div class="btnContainer">
+                <svg width="50" height="100" viewBox="0 0 100 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path id="rope" d="M50 0V130" stroke="#333842" stroke-width="6" />
+                    <path id="rope-original" d="M50 0V130" stroke="black" stroke-width="0" class="hidden" />
+                    <path id="rope-extended" d="M50 0V170" stroke="black" stroke-width="1" class="hidden" />
+                    <path id="rope-compressed"
+                        d="M50.6794 99.5395C50.6794 99.5395 51.0304 93.3539 50.6794 89.416C49.698 78.405 40.6105 73.7631 41.2462 62.7267C42.1339 47.3139 63.6882 46.1634 64.4843 30.7456C65.1561 17.7347 50.6794 0.375 50.6794 0.375"
+                        stroke="black" stroke-width="" class="hidden" />
+                    <path id="rope-end"
+                        d="M39.282 5.16623C39.9597 1.92197 42.8198 -0.402344 46.134 -0.402344H54.756C58.1211 -0.402344 61.01 1.99207 61.6344 5.29871L68.4328 41.2987C69.2468 45.6092 65.941 49.5977 61.5544 49.5977H38.6135C34.1717 49.5977 30.8531 45.5141 31.7614 41.1662L39.282 5.16623Z"
+                        transform="matrix(1,0,0,1,0,120)" fill="#3B2898" />
+                </svg>
+                <div class="btn no-highlight" id="btn">
+                    <div class="knob no-highlight">
+                        <div class="light no-highlight"></div>
+                        <div class="top no-highlight"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <h1>joker.tech <span>labs</span></h1>
+                <p1>inventing insane: for misfits, by misfits</p1>
+            </div>
+
+            <div id="cursor">
+                <div class="cursor--inner">
+                    <div class="bg-video-wrap">
+                        <video src="tech.mp4" loop muted autoplay>
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div calss="img">
+                <footer class="img-wrap">
+                    <button role="button" id="linkedin"
+                        onclick="location.href='https://linkedin.com/company/joker-tech-labs/'"><img
+                            src="linked.png"></button>
+                    <button role="button" id="twitter" onclick="location.href='https://twitter.com/jokertechlabs'"><img
+                            src="twitter.png"></button>
+                    <button role="button" id="popup-btn"><img src="icon1.png"></button>
+                    <button role="button" id="popup-btin"><img src="discord.png"></button>
+                    <button role="button" id="mail" onclick="mail()"><img src="mail.png"></button>
+                </footer>
+            </div>
+            <div id="popup-wrapper" class="popup-container">
+                <div class="popup-content">
+                    <span id="close"></span>
+                    <h1 class="glitch">
+                        <span aria-hidden="true">under construction</span>
+                        <span aria-hidden="true">under construction</span>
+                        under construction
+                        <span aria-hidden="true">under construction</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <script>const cursor = document.querySelector('#cursor');
+        let mouse = { x: 300, y: 300 };
+        let pos = { x: 0, y: 0 };
+        const speed = 0.1; // between 0 and 1
+
+        const updatePosition = () => {
+            pos.x += (mouse.x - pos.x) * speed;
+            pos.y += (mouse.y - pos.y) * speed;
+            cursor.style.transform = 'translate3d(' + pos.x + 'px ,' + pos.y + 'px, 0)';
+        };
+
+        const updateCoordinates = e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        }
+
+        window.addEventListener('mousemove', updateCoordinates);
+
+        function loop() {
+            updatePosition();
+            requestAnimationFrame(loop);
+        }
+
+        requestAnimationFrame(loop);
+
+        const imgs = document.querySelectorAll(".img-wrap > button");
+
+        imgs[0].parentElement.addEventListener("mouseover", e => {
+            if (e.target.tagName !== "IMG") return;
+            imgs.forEach(el => {
+                if (el !== e.target) el.classList.add("small-scale")
+            })
+        }, { passive: true });
+
+        imgs[0].parentElement.addEventListener("mouseout", e => {
+            if (e.target.tagName !== "IMG") return;
+            imgs.forEach(el => el.classList.remove("small-scale"));
+        }, { passive: true });
+        let isChecked = false;
+
+        var everyfuckingthing = document.getElementById("hero")
+        var thefuckingbody = document.body
+
+
+        function onBtnDown() {
+            const tl = gsap.timeline();
+            tl.to("#rope-end", { duration: 0.2, y: 10 }, "start");
+            tl.to("#rope", { duration: 0.2, morphSVG: "#rope-extended" }, "start");
+        }
+
+        function onBtnUp() {
+            backgroundColor: "#3c3459";
+            const tl = gsap.timeline();
+            tl.to(
+                "#rope",
+                { duration: 0.4, morphSVG: "#rope-compressed", ease: "bounce.out" },
+                "up"
+            );
+            tl.to(
+                "#rope",
+                { duration: 0.2, morphSVG: "#rope-original", ease: "bounce.out" },
+                "down"
+            );
+            tl.to("#rope-end", { duration: 0.4, y: 90, ease: "bounce.out" }, "up");
+            tl.to("#rope-end", { duration: 0.2, y: 120, ease: "bounce.out" }, "down");
+
+            isChecked = !isChecked;
+
+            everyfuckingthing.style.backgroundColor = "#000";
+            thefuckingbody.style.backgroundColor = "#000";
+
+            let x = 0;
+            let backgroundColor = "#827D96";
+            let size = "100px";
+
+            if (isChecked) {
+                x = 50;
+                backgroundColor = "#fff";
+                size = "500px";
+
+                everyfuckingthing.style.backgroundColor = "#fff";
+                thefuckingbody.style.backgroundColor = "#fff";
+
+            }
+
+            tl.to(".knob", { x, duration: 1 }, "up");
+            tl.to(".top", { backgroundColor, duration: 1 }, "up");
+            tl.to(".light", { width: size, height: size, duration: 1 }, "up");
+        }
+
+        const btn = document.getElementById("btn");
+        btn.addEventListener("mousedown", onBtnDown);
+        btn.addEventListener("mouseup", onBtnUp);
+
+        function mail() {
+            window.open("mailto:jokertechlabs@gmail.com");
+        }
+
+        var popup = document.getElementById('popup-wrapper');
+        var butn = document.getElementById("popup-btn");
+        var span = document.getElementById("close");
+        butn.onclick = function () {
+            popup.classList.add('show');
+        }
+        span.onclick = function () {
+            popup.classList.remove('show');
+        }
+
+        window.onclick = function (event) {
+            if (event.target == popup) {
+                popup.classList.remove('show');
+            }
+        }
+        var popup = document.getElementById('popup-wrapper');
+        var butn = document.getElementById("popup-btin");
+        var span = document.getElementById("close");
+        butn.onclick = function () {
+            popup.classList.add('show');
+        }
+        span.onclick = function () {
+            popup.classList.remove('show');
+        }
+
+        window.onclick = function (event) {
+            if (event.target == popup) {
+                popup.classList.remove('show');
+            }
+        }</script>
+</body>
+
+</html>
