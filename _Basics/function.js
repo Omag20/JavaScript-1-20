@@ -1,44 +1,19 @@
-function greet(name,age=50){
-    console.log(`hy ${name} and ${age} `);
+function greet(name, age = 50) {
+	console.log(`hy ${name} and ${age} `);
 }
-let name ='yes';
-name="eah"
-greet('name',56);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let name = 'yes';
+name = 'eah';
+greet('name', 56);
 
 // _____________________________________________
 
-
-
-function greet2(name,age=50){
-    console.log('heloo he;oooo')
-    msg=`hy ${name} and ${age} `;
-    return msg;
+function greet2(name, age = 50) {
+	console.log('heloo he;oooo');
+	msg = `hy ${name} and ${age} `;
+	return msg;
 }
 
-greet2('javs' )
+greet2('javs');
 console.log(msg);
 /*
 
